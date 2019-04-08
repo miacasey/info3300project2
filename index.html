@@ -5,8 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
-    
+  <script>
+  const requestData = async() => {
+
+    const may2018 = await d3.csv("/May2018.csv");
+    const jan2018 = await d3.csv("/Jan2018.csv");
+    const aug2016 = await d3.csv("/August2016.csv");
+    const july2015 = await d3.csv("/July2015.csv");
+    const jan2014 = await d3.csv("/2014.csv");
+    console.log("working");
+
+
+
+
+
+
+    //scatterplots
+
+  }
+
+  requestData();
+  </script>
+
+
 </body>
 </html>
