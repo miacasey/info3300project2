@@ -11,7 +11,7 @@
 <body>
 
   <!-- scatterplot -->
-  <svg id = "scatter" width = 850 height = 550 style = "border: 1px solid black">
+  <svg id = "scatter" width = 1200 height = 550 style = "border: 1px solid black">
   </svg>
 
   <script>
@@ -91,6 +91,7 @@
 	       .attr('y1', 500)
          .attr('y2', 0)
          .style('stroke', 'black')
+         .style("opacity", 0.4)
          .attr("transform", "translate(25, 10)");
 
       svg.append("text")
@@ -109,8 +110,168 @@
          .attr('y1', yScale(j))
          .attr('y2', yScale(j))
          .style('stroke', 'black')
+         .style("opacity", 0.4)
          .attr("transform", "translate(25, 10)");
     }
+
+    var line = d3.line()
+                 .x(function(d, i) { return xScale(i); })
+                 .y(function(d) { return yScale(d); });
+
+
+
+    let processedData = [usPopulation, sampleAvg, diversityInc, fortune500, congress];
+    let colors = ["red", "green", "purple", "gold", "blue"];
+    let labels = ["U.S. Population", "Companies Average", "DiversityInc Top 50",
+                    "Fortune 500 CEOs", "U.S Congress"];
+    let categories = ["Female", "Male", "White", "Asian", "Latino", "Black"];
+
+    //legend
+    let legend = svg.append("g")
+                    .attr("transform", "translate(850, 10)");
+
+    for (let j = 0; j < 5; j++){
+      legend.append("rect")
+         .attr("x", 0)
+         .attr("y", j * 25)
+         .attr("width", 30)
+         .attr("height", 20)
+         .attr("fill", colors[j]);
+
+      legend.append("text")
+        .attr("x", 40)
+        .attr("y", j * 25 + 15)
+        .text(labels[j]);
+
+    }
+
+    let category_buttons = svg.append("g").attr("transform", "translate(850, 300)");
+    for (let k = 0; k < 6; k++){
+      category_buttons.append("text")
+        .attr("class", "category_buttons")
+        .attr("id", categories[k])
+        .attr("x", 0)
+        .attr("y", k*20)
+        .style("opacity", (k === 0) ? 1 : 0.4)
+        .text(categories[k]);
+    }
+
+    //buttons
+    let female_button = d3.select("text#Female");
+    let male_button = d3.select("text#Male");
+    let white_button = d3.select("text#White");
+    let asian_button = d3.select("text#Asian");
+    let latino_button = d3.select("text#Latino");
+    let black_button = d3.select("text#Black");
+
+    //different layers
+    let female = svg.append("g");
+    let male = svg.append("g").attr("display", "none");
+    let white = svg.append("g").attr("display", "none");
+    let asian = svg.append("g").attr("display", "none");
+    let latino = svg.append("g").attr("display", "none");
+    let black = svg.append("g").attr("display", "none");
+
+    let category_layers = [female, male, white, asian, latino, black];
+
+    //drawing lines
+    for (let i = 0; i < 5; i++){
+      female.append("path")
+            .datum(processedData[i].female)
+            .attr("class", "line")
+            .attr("d", line)
+            .style("stroke", colors[i])
+            .style("fill", "none")
+            .style("stroke-width", "3")
+            .attr("transform", "translate(25, 10)");
+
+      male.append("path")
+            .datum(processedData[i].male)
+            .attr("class", "line")
+            .attr("d", line)
+            .style("stroke", colors[i])
+            .style("fill", "none")
+            .style("stroke-width", "3")
+            .attr("transform", "translate(25, 10)");
+
+      black.append("path")
+          .datum(processedData[i].black)
+          .attr("class", "line")
+          .attr("d", line)
+          .style("stroke", colors[i])
+          .style("fill", "none")
+          .style("stroke-width", "3")
+          .attr("transform", "translate(25, 10)");
+
+      white.append("path")
+           .datum(processedData[i].white)
+           .attr("class", "line")
+           .attr("d", line)
+           .style("stroke", colors[i])
+           .style("fill", "none")
+           .style("stroke-width", "3")
+           .attr("transform", "translate(25, 10)");
+
+      latino.append("path")
+           .datum(processedData[i].latino)
+           .attr("class", "line")
+           .attr("d", line)
+           .style("stroke", colors[i])
+           .style("fill", "none")
+           .style("stroke-width", "3")
+           .attr("transform", "translate(25, 10)");
+
+      asian.append("path")
+           .datum(processedData[i].asian)
+           .attr("class", "line")
+           .attr("d", line)
+           .style("stroke", colors[i])
+           .style("fill", "none")
+           .style("stroke-width", "3")
+           .attr("transform", "translate(25, 10)");
+
+    }
+
+    let buttons_list = [female_button, male_button, white_button, asian_button,
+        latino_button, black_button];
+
+    //handles clicking
+    function click(num){
+      for (let i = 0; i < 6; i++){
+        if (i === num){
+          category_layers[i].attr("display", "block");
+          buttons_list[i].style("opacity", 1);
+        } else {
+          category_layers[i].attr("display", "none");
+          buttons_list[i].style("opacity", 0.4);
+        }
+      }
+    }
+
+    //mouse events
+    female_button.on("click", function(){
+      click(0);
+    });
+
+    male_button.on("click", function(){
+      click(1);
+    });
+
+    white_button.on("click", function(){
+      click(2);
+    });
+
+    asian_button.on("click", function(){
+      click(3);
+    })
+
+    latino_button.on("click", function(){
+      click(4);
+    })
+
+    black_button.on("click", function(){
+      click(5);
+    })
 
 
   }
