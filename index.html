@@ -23,8 +23,55 @@
     const july2015 = await d3.csv("/July2015.csv");
     const jan2014 = await d3.csv("/2014.csv");
 
-    //scatterplot
-    console.log(may2018);
+
+
+    //scatterplot data processing
+    let data = [jan2014, july2015, aug2016, jan2018, may2018];
+
+    function dataProcessing(company){
+
+      let dataObject = {
+        female: [],
+        male: [],
+        white: [],
+        asian: [],
+        latino: [],
+        black: []
+      };
+
+      for (let i = 0; i < data.length; i++){
+        let lineNum = 0;
+        for (let j = 0; j < data[i].length; j++){
+          if (data[i][j].Company === company){
+            lineNum = j;
+          }
+        }
+
+        dataObject.female.push(data[i][lineNum].Female.replace(/[^.\d]/g, ""));
+        dataObject.male.push(data[i][lineNum].Male.replace(/[^.\d]/g, ""));
+        dataObject.white.push(data[i][lineNum].White.replace(/[^.\d]/g, ""));
+        dataObject.asian.push(data[i][lineNum].Asian.replace(/[^.\d]/g, ""));
+        dataObject.latino.push(data[i][lineNum].Latino.replace(/[^.\d]/g, ""));
+        dataObject.black.push(data[i][lineNum].Black.replace(/[^.\d]/g, ""));
+
+      }
+
+      return dataObject;
+
+    }
+
+    let usPopulation = dataProcessing("U.S. Population");
+    let sampleAvg = dataProcessing("average from our sample");
+    let diversityInc = dataProcessing("DiversityInc top 50");
+    let fortune500 = dataProcessing("Fortune 500 CEOs");
+    let congress = dataProcessing("US Congress");
+
+    console.log(usPopulation);
+    console.log(sampleAvg);
+    console.log(diversityInc);
+    console.log(fortune500);
+    console.log(congress);
+
 
   }
 
