@@ -8,6 +8,8 @@
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+    <!-- https://bl.ocks.org/johnwalley/e1d256b81e51da68f7feb632a53c3518 -->
 </head>
 <style>
 .outline {
@@ -22,8 +24,10 @@
   <svg id = "scatter" width = 1200 height = 550 style = "border: 1px solid black">
   </svg>
   <!-- map -->
-  <svg id = "map_canvas" width = 800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
-
+  <div width= 1200>
+      <svg id = "map_canvas" width = 800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
+      <svg id= "map_sliders" width= 395 height= 900 style = "background : #fff; border: 1px solid grey"></svg>
+  </div>
   <script>
   const requestData = async() => {
 
@@ -65,8 +69,18 @@
             .attr("cy", d => d.position[1])
             .style ("fill", "purple")
             .style("stroke-width", "1px");
-
-
+    // sliders 
+    var sliderFemale= d3.sliderBottom()
+        .min(0)
+        .max(0.6)
+        .width(300)
+        .tickFormat(d3.format('.2%'))
+        .ticks(7)
+        .default(0);
+    var slide1= d3.select("#map_sliders")
+        .append('g')
+        .attr('transform', 'translate(30,100)')
+    slide1.call(sliderFemale);
 
 
     //scatterplot data processing
