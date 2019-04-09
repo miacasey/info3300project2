@@ -26,7 +26,7 @@
   <!-- map -->
   <div width= 1200>
       <svg id = "map_canvas" width = 800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
-      <svg id= "map_sliders" width= 395 height= 900 style = "background : #fff; border: 1px solid grey"></svg>
+      <svg id= "map_sliders" width= 325 height= 900 style = "background : #fff; border: 1px solid grey"></svg>
   </div>
   <script>
   const requestData = async() => {
@@ -48,42 +48,120 @@
     var bayMesh = topojson.mesh(bay, bay.objects.baycounties);
     var projection = d3.geoMercator().fitSize([mapWidth, mapHeight], bayMesh);
     var path = d3.geoPath().projection(projection);
-    
 
     viewport.append("path")
       .datum(bayMesh)
       .attr("class", "outline")
       .attr("d", path);
-
-
+    
     const location = await d3.csv("/locationsalary.csv");
+    var femaleVal= 0
+    var asianVal= 0
+    var latinoVal= 0
+    var blackVal= 0
 
-    location.forEach (d => {
-      d['position'] = projection([d.Longitude, d.Latitude]);
-    });
+    d3.select("#map_sliders")
+        .append("text")
+        .attr('transform', 'translate(30,80)')
+        .text("Female")
+    var sliderFemale= d3.sliderBottom()
+        .min(0)
+        .max(0.6)
+        .width(250)
+        .tickFormat(d3.format('.2%'))
+        .ticks(5)
+        .default(0)
+        .on("onchange", val=>{
+          femaleVal = val*100
+          updateLocations()
+        });
+    var slide1= d3.select("#map_sliders")
+        .append('g')
+        .attr('transform', 'translate(30,110)')
+    slide1.call(sliderFemale);
+    
+    d3.select("#map_sliders")
+        .append("text")
+        .attr('transform', 'translate(30,210)')
+        .text("Asian")
+    var sliderAsian= d3.sliderBottom()
+        .min(0)
+        .max(0.5)
+        .width(250)
+        .tickFormat(d3.format('.2%'))
+        .ticks(5)
+        .default(0)
+        .on("onchange", val=>{
+          asianVal = val*100
+          updateLocations()
+        });
+    var slide2= d3.select("#map_sliders")
+        .append('g')
+        .attr('transform', 'translate(30,240)')
+    slide2.call(sliderAsian);
+    
+    d3.select("#map_sliders")
+        .append("text")
+        .attr('transform', 'translate(30,340)')
+        .text("Latino")
+    var sliderLatino= d3.sliderBottom()
+        .min(0)
+        .max(0.2)
+        .width(250)
+        .tickFormat(d3.format('.2%'))
+        .ticks(5)
+        .default(0)
+        .on("onchange", val=>{
+          latinoVal = val*100
+          updateLocations()
+        });
+    var slide3= d3.select("#map_sliders")
+        .append('g')
+        .attr('transform', 'translate(30,370)')
+    slide3.call(sliderLatino);
 
-    viewport.selectAll("circle").data(location)
-            .enter()
+    d3.select("#map_sliders")
+        .append("text")
+        .attr('transform', 'translate(30,470)')
+        .text("Black")
+    var sliderBlack= d3.sliderBottom()
+        .min(0)
+        .max(0.25)
+        .width(250)
+        .tickFormat(d3.format('.2%'))
+        .ticks(5)
+        .default(0)
+        .on("onchange", val=>{
+          blackVal = val*100
+          updateLocations()
+        });
+    d3.select("#map_sliders")
+        .append('g')
+        .attr('transform', 'translate(30,500)')
+        .call(sliderBlack);
+
+    function updateLocations(){
+      location.forEach (d => {
+        d['position'] = projection([d.Longitude, d.Latitude]);
+      });
+      var circle= viewport.selectAll("circle").data(location);
+      circle.exit().remove();
+      circle.enter()
             .append("circle")
-            .attr("r", 6)
+            .merge(circle)
+            .attr("r", function(d){
+              if (d.Female>femaleVal && d.Asian>asianVal && d.Latino>latinoVal && d.Black>blackVal){
+                return 6;
+              } else {
+                return 0;
+              }})
             .attr("opacity", 0.5)
             .attr("cx", d => d.position[0])
             .attr("cy", d => d.position[1])
             .style ("fill", "purple")
             .style("stroke-width", "1px");
-    // sliders 
-    var sliderFemale= d3.sliderBottom()
-        .min(0)
-        .max(0.6)
-        .width(300)
-        .tickFormat(d3.format('.2%'))
-        .ticks(7)
-        .default(0);
-    var slide1= d3.select("#map_sliders")
-        .append('g')
-        .attr('transform', 'translate(30,100)')
-    slide1.call(sliderFemale);
-
+    }
+    updateLocations()
    // pan and zoom for map
    var zoom = d3.zoom()
               .scaleExtent([1,10])
