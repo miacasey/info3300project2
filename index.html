@@ -8,14 +8,15 @@
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
+
+    <style>
+    .outline {
+      stroke: gainsboro;
+      stroke-width: 1px;
+      fill: none;
+    }
+    </style>
 </head>
-<style>
-.outline {
-  stroke: gainsboro;
-  stroke-width: 1px;
-  fill: none;
-}
-</style>
 <body>
 
   <!-- scatterplot -->
@@ -122,11 +123,12 @@
     //grid
     let svg = d3.select("svg#scatter");
 
-    let leftAxis = d3.axisLeft(yScale);
+    let leftAxis = d3.axisLeft(yScale).tickFormat(d => d + "%");
     svg.append("g")
       .attr("class", "y axis")
-      .attr("transform", "translate(25, 10)")
+      .attr("transform", "translate(40, 11)")
       .call(leftAxis);
+
     //x-axis grids
     for (let i = 0; i < 5; i++){
       svg.append('line')
@@ -136,14 +138,14 @@
          .attr('y2', 0)
          .style('stroke', 'black')
          .style("opacity", 0.4)
-         .attr("transform", "translate(25, 10)");
+         .attr("transform", "translate(40, 10)");
 
       svg.append("text")
          .attr("x", xScale(i))
          .attr("y", 500)
          .text(i + 2014)
          .style('color', 'black')
-         .attr("transform", "translate(10, 30)");
+         .attr("transform", "translate(25, 30)");
     }
 
     //y-axis grids
@@ -155,7 +157,7 @@
          .attr('y2', yScale(j))
          .style('stroke', 'black')
          .style("opacity", 0.4)
-         .attr("transform", "translate(25, 10)");
+         .attr("transform", "translate(40, 10)");
     }
 
     var line = d3.line()
@@ -189,6 +191,7 @@
 
     }
 
+    //text for category buttons
     let category_buttons = svg.append("g").attr("transform", "translate(850, 300)");
     for (let k = 0; k < 6; k++){
       category_buttons.append("text")
@@ -196,6 +199,7 @@
         .attr("id", categories[k])
         .attr("x", 0)
         .attr("y", k*20)
+        .attr("font-size", "20px")
         .style("opacity", (k === 0) ? 1 : 0.4)
         .text(categories[k]);
     }
@@ -226,8 +230,9 @@
             .attr("d", line)
             .style("stroke", colors[i])
             .style("fill", "none")
-            .style("stroke-width", "3")
-            .attr("transform", "translate(25, 10)");
+            .style("stroke-width", (i===1) ? 4 : 3)
+            .style("opacity", (i === 1) ? 1 : 0.4)
+            .attr("transform", "translate(40, 10)");
 
       male.append("path")
             .datum(processedData[i].male)
@@ -235,8 +240,9 @@
             .attr("d", line)
             .style("stroke", colors[i])
             .style("fill", "none")
-            .style("stroke-width", "3")
-            .attr("transform", "translate(25, 10)");
+            .style("stroke-width", (i===1) ? 4 : 3)
+            .style("opacity", (i === 1) ? 1 : 0.4)
+            .attr("transform", "translate(40, 10)");
 
       black.append("path")
           .datum(processedData[i].black)
@@ -244,8 +250,9 @@
           .attr("d", line)
           .style("stroke", colors[i])
           .style("fill", "none")
-          .style("stroke-width", "3")
-          .attr("transform", "translate(25, 10)");
+          .style("stroke-width", (i===1) ? 4 : 3)
+          .style("opacity", (i === 1) ? 1 : 0.4)
+          .attr("transform", "translate(40, 10)");
 
       white.append("path")
            .datum(processedData[i].white)
@@ -253,8 +260,9 @@
            .attr("d", line)
            .style("stroke", colors[i])
            .style("fill", "none")
-           .style("stroke-width", "3")
-           .attr("transform", "translate(25, 10)");
+           .style("stroke-width", (i===1) ? 4 : 3)
+           .style("opacity", (i === 1) ? 1 : 0.4)
+           .attr("transform", "translate(40, 10)");
 
       latino.append("path")
            .datum(processedData[i].latino)
@@ -262,8 +270,9 @@
            .attr("d", line)
            .style("stroke", colors[i])
            .style("fill", "none")
-           .style("stroke-width", "3")
-           .attr("transform", "translate(25, 10)");
+           .style("stroke-width", (i===1) ? 4 : 3)
+           .style("opacity", (i === 1) ? 1 : 0.4)
+           .attr("transform", "translate(40, 10)");
 
       asian.append("path")
            .datum(processedData[i].asian)
@@ -271,8 +280,9 @@
            .attr("d", line)
            .style("stroke", colors[i])
            .style("fill", "none")
-           .style("stroke-width", "3")
-           .attr("transform", "translate(25, 10)");
+           .style("stroke-width", (i===1) ? 4 : 3)
+           .style("opacity", (i === 1) ? 1 : 0.4)
+           .attr("transform", "translate(40, 10)");
 
     }
 
