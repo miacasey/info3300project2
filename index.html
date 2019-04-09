@@ -11,7 +11,7 @@
 <body>
 
   <!-- scatterplot -->
-  <svg id = "scatter" width = 830 height = 550 style = "border: 1px solid black">
+  <svg id = "scatter" width = 850 height = 550 style = "border: 1px solid black">
   </svg>
 
   <script>
@@ -66,11 +66,51 @@
     let fortune500 = dataProcessing("Fortune 500 CEOs");
     let congress = dataProcessing("US Congress");
 
-    console.log(usPopulation);
-    console.log(sampleAvg);
-    console.log(diversityInc);
-    console.log(fortune500);
-    console.log(congress);
+    //scales
+    let xScale = d3.scaleLinear()
+                   .domain([0, 4])
+                   .range([0, 800]);
+
+    let yScale = d3.scaleLinear()
+                   .domain([0, 100])
+                   .range([500, 0]);
+
+    //grid
+    let svg = d3.select("svg#scatter");
+
+    let leftAxis = d3.axisLeft(yScale);
+    svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(25, 10)")
+      .call(leftAxis);
+    //x-axis grids
+    for (let i = 0; i < 5; i++){
+      svg.append('line')
+         .attr('x1', xScale(i))
+	       .attr('x2', xScale(i))
+	       .attr('y1', 500)
+         .attr('y2', 0)
+         .style('stroke', 'black')
+         .attr("transform", "translate(25, 10)");
+
+      svg.append("text")
+         .attr("x", xScale(i))
+         .attr("y", 500)
+         .text(i + 2014)
+         .style('color', 'black')
+         .attr("transform", "translate(10, 30)");
+    }
+
+    //y-axis grids
+    for (let j = 0; j <= 100; j+=10){
+      svg.append('line')
+         .attr('x1', 0)
+         .attr('x2', 800)
+         .attr('y1', yScale(j))
+         .attr('y2', yScale(j))
+         .style('stroke', 'black')
+         .attr("transform", "translate(25, 10)");
+    }
 
 
   }
