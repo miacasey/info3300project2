@@ -43,12 +43,14 @@
     var map = d3.select("#map_canvas");
     var mapWidth = map.attr("width")-10;
     var mapHeight = map.attr("height")-20;
+    let viewport = map.append('g');
 
     var bayMesh = topojson.mesh(bay, bay.objects.baycounties);
     var projection = d3.geoMercator().fitSize([mapWidth, mapHeight], bayMesh);
     var path = d3.geoPath().projection(projection);
+    
 
-    map.append("path")
+    viewport.append("path")
       .datum(bayMesh)
       .attr("class", "outline")
       .attr("d", path);
@@ -60,7 +62,7 @@
       d['position'] = projection([d.Longitude, d.Latitude]);
     });
 
-    map.selectAll("circle").data(location)
+    viewport.selectAll("circle").data(location)
             .enter()
             .append("circle")
             .attr("r", 6)
@@ -81,6 +83,28 @@
         .append('g')
         .attr('transform', 'translate(30,100)')
     slide1.call(sliderFemale);
+
+   // pan and zoom for map
+   var zoom = d3.zoom()
+              .scaleExtent([1,10])
+              .on("zoom", zoomed);
+
+  map.call(zoom);
+
+  map.call(zoom.transform, d3.zoomIdentity);
+
+  function zoomed(){
+    let transform = d3.event.transform;
+    console.log(transform);
+    console.log(transform.toString());
+
+    viewport.attr("transform", transform.toString());
+    viewport.select(".outline")
+            .style("stroke-width", 1/transform.k);
+
+
+  }
+  //
 
 
     //scatterplot data processing
