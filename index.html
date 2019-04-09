@@ -7,12 +7,22 @@
     <title>Document</title>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
 </head>
+<style>
+.outline {
+  stroke: gainsboro;
+  stroke-width: 1px;
+  fill: none;
+}
+</style>
 <body>
 
   <!-- scatterplot -->
   <svg id = "scatter" width = 1200 height = 550 style = "border: 1px solid black">
   </svg>
+  <!-- map -->
+  <svg id = "map_canvas" width = 800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
 
   <script>
   const requestData = async() => {
@@ -22,6 +32,40 @@
     const aug2016 = await d3.csv("/August2016.csv");
     const july2015 = await d3.csv("/July2015.csv");
     const jan2014 = await d3.csv("/2014.csv");
+    const bay = await d3.json("/baycounties.json");
+    console.log(bay);
+
+    // map creation
+    var map = d3.select("#map_canvas");
+    var mapWidth = map.attr("width")-10;
+    var mapHeight = map.attr("height")-20;
+
+    var bayMesh = topojson.mesh(bay, bay.objects.baycounties);
+    var projection = d3.geoMercator().fitSize([mapWidth, mapHeight], bayMesh);
+    var path = d3.geoPath().projection(projection);
+
+    map.append("path")
+      .datum(bayMesh)
+      .attr("class", "outline")
+      .attr("d", path);
+
+
+    const location = await d3.csv("/locationsalary.csv");
+
+    location.forEach (d => {
+      d['position'] = projection([d.Longitude, d.Latitude]);
+    });
+
+    map.selectAll("circle").data(location)
+            .enter()
+            .append("circle")
+            .attr("r", 6)
+            .attr("opacity", 0.5)
+            .attr("cx", d => d.position[0])
+            .attr("cy", d => d.position[1])
+            .style ("fill", "purple")
+            .style("stroke-width", "1px");
+
 
 
 
