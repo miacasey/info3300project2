@@ -102,7 +102,7 @@
         .append('g')
         .attr('transform', 'translate(30,80)')
     slide1.call(sliderFemale);
-    
+
     //adding percentage Asian slider
     d3.select("#map_sliders")
         .append("text")
@@ -189,20 +189,31 @@
             .style("stroke-width", "1px");
     }
 
-    // initate map with all markers
+    // initate map with all markers and empty textbox
     updateLocations()
+    let textbox= d3.select("#map_canvas").append('g');
+    textbox.append("rect")
+      .attr("id", "textbox")
+      .attr("class", "infoBox")
+      .attr("width", 225)
+      .attr("height", 200)
+      .attr("transform", "translate(30, 40)")
+    textbox.append("text")
+      .attr("id", "label")
+      .attr("x", 55)
+      .attr("y", 90)
+      .text("Click on a company to");
+    textbox.append("text")
+      .attr("id", "label")
+      .attr("x", 50)
+      .attr("y", 110)
+      .text("see employee diversity");
 
     // add/update text box in the corner of viewport (doesn't zoom)
     function addText(d){
       d3.selectAll('#label')
                 .remove();
-      let textbox= d3.select("#map_canvas").append('g');
-      textbox.append("rect")
-        .attr("id", "textbox")
-        .attr("class", "infoBox")
-        .attr("width", 225)
-        .attr("height", 200)
-        .attr("transform", "translate(30, 40)")
+      
       textbox.append("text")
         .attr("id", "label")
         .attr("class", "company")
