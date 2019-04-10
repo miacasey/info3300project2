@@ -8,6 +8,7 @@
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans" />
 
     <style>
     .outline {
@@ -17,6 +18,11 @@
     }
     .textbox {
       fill:azure;
+    }
+
+    #label {
+      font-family: Josefin Sans;
+      font-size: 24px; 
     }
     </style>
 
@@ -189,22 +195,22 @@
         .attr("class", "company")
         .attr("x", 80)
         .attr("y", 620)
-        .text("Female: %"+d.Female);
+        .text("Female: % "+d.Female);
       textbox.append("text")
         .attr("id", "label")
         .attr("x", 80)
         .attr("y", 640)
-        .text("Asian: %"+d.Asian);
+        .text("Asian: % "+d.Asian);
       textbox.append("text")
         .attr("id", "label")
         .attr("x", 80)
         .attr("y", 660)
-        .text("Latino: %"+d.Latino);
+        .text("Latino: % "+d.Latino);
       textbox.append("text")
         .attr("id", "label")
         .attr("x", 80)
         .attr("y", 680)
-        .text("Black: %"+d.Black);
+        .text("Black: % "+d.Black);
     }
    // pan and zoom for map
    var zoom = d3.zoom()
