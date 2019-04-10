@@ -55,7 +55,7 @@
       .datum(bayMesh)
       .attr("class", "outline")
       .attr("d", path);
-    
+
     const location = await d3.csv("/locationsalary.csv");
     var femaleVal= 0
     var asianVal= 0
@@ -81,7 +81,7 @@
         .append('g')
         .attr('transform', 'translate(30,110)')
     slide1.call(sliderFemale);
-    
+
     d3.select("#map_sliders")
         .append("text")
         .attr('transform', 'translate(30,210)')
@@ -101,7 +101,7 @@
         .append('g')
         .attr('transform', 'translate(30,240)')
     slide2.call(sliderAsian);
-    
+
     d3.select("#map_sliders")
         .append("text")
         .attr('transform', 'translate(30,340)')
@@ -179,7 +179,7 @@
    var zoom = d3.zoom()
               .scaleExtent([1,10])
               .on("zoom", zoomed);
-  
+
 
   map.call(zoom);
 
@@ -192,7 +192,11 @@
 
     viewport.attr("transform", transform.toString());
     viewport.select(".outline")
-            .style("stroke-width", 1/transform.k);
+            .style("stroke-width", 1);
+            viewport.selectAll("circle")
+                    .attr("r", 6/transform.k);
+
+
 
 
   }
