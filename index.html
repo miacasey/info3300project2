@@ -26,15 +26,9 @@
   <svg id = "scatter" width = 1200 height = 550 style = "border: 1px solid black">
   </svg>
   <!-- map -->
-<<<<<<< HEAD
   <div width= 1200>
       <svg id = "map_canvas" width = 800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
       <svg id= "map_sliders" width= 325 height= 900 style = "background : #fff; border: 1px solid grey"></svg>
-=======
-  <div>
-      <svg id = "map_canvas" width=800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
-      <svg id= "map_sliders" width= 395 height= 900 style = "background : #fff; border: 1px solid grey"></svg>
->>>>>>> 7d6b09390fe0563971f6fc7e4b48574c6901663a
   </div>
   <script>
   const requestData = async() => {
@@ -56,10 +50,6 @@
     var bayMesh = topojson.mesh(bay, bay.objects.baycounties);
     var projection = d3.geoMercator().fitSize([mapWidth, mapHeight], bayMesh);
     var path = d3.geoPath().projection(projection);
-<<<<<<< HEAD
-=======
-
->>>>>>> 7d6b09390fe0563971f6fc7e4b48574c6901663a
 
     viewport.append("path")
       .datum(bayMesh)
@@ -67,7 +57,6 @@
       .attr("d", path);
     
     const location = await d3.csv("/locationsalary.csv");
-<<<<<<< HEAD
     var femaleVal= 0
     var asianVal= 0
     var latinoVal= 0
@@ -77,24 +66,6 @@
         .append("text")
         .attr('transform', 'translate(30,80)')
         .text("Female")
-=======
-
-    location.forEach (d => {
-      d['position'] = projection([d.Longitude, d.Latitude]);
-    });
-
-    viewport.selectAll("circle").data(location)
-            .enter()
-            .append("circle")
-            .attr("r", 6)
-            .attr("opacity", 0.5)
-            .attr("cx", d => d.position[0])
-            .attr("cy", d => d.position[1])
-            .style ("fill", "purple")
-            .style("stroke-width", "1px");
-
-    // sliders
->>>>>>> 7d6b09390fe0563971f6fc7e4b48574c6901663a
     var sliderFemale= d3.sliderBottom()
         .min(0)
         .max(0.6)
@@ -181,22 +152,34 @@
             .append("circle")
             .merge(circle)
             .attr("r", function(d){
-              if (d.Female>femaleVal && d.Asian>asianVal && d.Latino>latinoVal && d.Black>blackVal){
-                return 6;
-              } else {
-                return 0;
-              }})
+              if (d.Female>femaleVal && d.Asian>asianVal && d.Latino>latinoVal && d.Black>blackVal){ return 6; }
+              else { return 0; }})
             .attr("opacity", 0.5)
             .attr("cx", d => d.position[0])
             .attr("cy", d => d.position[1])
+            .on("click", function(d){
+              d3.selectAll('#label')
+                .remove();
+              viewport.append("text")
+                .attr("id", "label")
+                .attr("x", d.position[0]-40)
+                .attr("y", d.position[1]-20)
+                .text(d.Company);
+            })
             .style ("fill", "purple")
             .style("stroke-width", "1px");
     }
     updateLocations()
+    function addText(circle, company, female, asian, latino, black){
+      circle.append("text")
+        .attr('transform', 'translate(30,450)')
+        .text("Black")
+    }
    // pan and zoom for map
    var zoom = d3.zoom()
               .scaleExtent([1,10])
               .on("zoom", zoomed);
+  
 
   map.call(zoom);
 
