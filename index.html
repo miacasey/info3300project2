@@ -11,18 +11,25 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans" />
 
     <style>
+    body {
+      font-family: Josefin Sans;
+    }
+
     .outline {
       stroke: gainsboro;
       stroke-width: 1px;
       fill: none;
     }
-    .textbox {
-      fill:azure;
+    .infoBox {
+      fill:aliceblue;
+      stroke:lightsteelblue;
+      stroke-width:3;
+      fill-opacity:0.4;
+      stroke-opacity:0.9
     }
 
-    #label {
-      font-family: Josefin Sans;
-      font-size: 24px; 
+    .company {
+      font-size: 24px;
     }
     </style>
 
@@ -30,15 +37,17 @@
     <!-- https://bl.ocks.org/johnwalley/e1d256b81e51da68f7feb632a53c3518 -->
 </head>
 <body>
-
-  <!-- scatterplot -->
-  <svg id = "scatter" width = 1200 height = 550 style = "border: 1px solid black">
-  </svg>
+  <h1> Diversity in Tech</h1>
+  <h3>Employee Breakdown of Major Technology Companies</h3>
   <!-- map -->
   <div width= 1200>
-      <svg id = "map_canvas" width = 800 height = 900 style = "background : #fff; border: 1px solid grey"></svg>
-      <svg id= "map_sliders" width= 325 height= 900 style = "background : #fff; border: 1px solid grey"></svg>
+      <svg id = "map_canvas" width = 700 height = 600 style = "background : #fff; border: 1px solid grey"></svg>
+      <svg id= "map_sliders" width= 400 height= 600 style = "background : #fff; border: 1px solid grey"></svg>
   </div>
+
+    <!-- scatterplot -->
+  <svg id = "scatter" width = 1100 height = 550 style = "border: 1px solid black"></svg>
+
   <script>
   const requestData = async() => {
 
@@ -66,14 +75,17 @@
       .attr("d", path);
 
     const location = await d3.csv("/locationsalary.csv");
+
+    // keeping track of threshold values of each demographic
     var femaleVal= 0
     var asianVal= 0
     var latinoVal= 0
     var blackVal= 0
 
+    // adding Female percentage slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,80)')
+        .attr('transform', 'translate(30,50)')
         .text("Female")
     var sliderFemale= d3.sliderBottom()
         .min(0)
@@ -88,12 +100,13 @@
         });
     var slide1= d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,110)')
+        .attr('transform', 'translate(30,80)')
     slide1.call(sliderFemale);
-
+    
+    //adding percentage Asian slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,210)')
+        .attr('transform', 'translate(30,170)')
         .text("Asian")
     var sliderAsian= d3.sliderBottom()
         .min(0)
@@ -108,12 +121,13 @@
         });
     var slide2= d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,240)')
+        .attr('transform', 'translate(30,200)')
     slide2.call(sliderAsian);
 
+    // adding percentage Latino slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,340)')
+        .attr('transform', 'translate(30,290)')
         .text("Latino")
     var sliderLatino= d3.sliderBottom()
         .min(0)
@@ -128,12 +142,13 @@
         });
     var slide3= d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,370)')
+        .attr('transform', 'translate(30,320)')
     slide3.call(sliderLatino);
 
+    // ading percentage Black slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,470)')
+        .attr('transform', 'translate(30,410)')
         .text("Black")
     var sliderBlack= d3.sliderBottom()
         .min(0)
@@ -148,9 +163,10 @@
         });
     d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,500)')
+        .attr('transform', 'translate(30,440)')
         .call(sliderBlack);
 
+    // function to continuously check the treshold values of each demographic and update (remove markers) accordingly
     function updateLocations(){
       location.forEach (d => {
         d['position'] = projection([d.Longitude, d.Latitude]);
@@ -172,46 +188,54 @@
             .style ("fill", "purple")
             .style("stroke-width", "1px");
     }
+
+    // initate map with all markers
     updateLocations()
+
+    // add/update text box in the corner of viewport (doesn't zoom)
     function addText(d){
       d3.selectAll('#label')
                 .remove();
-      d3.selectAll('#textbox')
-                .remove();
-      let textbox= d3.select("#map_sliders").append('g')
+      let textbox= d3.select("#map_canvas").append('g');
       textbox.append("rect")
-        .attr("class", "textbox")
         .attr("id", "textbox")
-        .attr("width", 250)
-        .attr("height", 300)
-        .attr("transform", "translate(30, 570)")
-      textbox.append("text")
-        .attr("id", "label")
-        .attr("x", 80)
-        .attr("y", 600)
-        .text(d.Company);
+        .attr("class", "infoBox")
+        .attr("width", 225)
+        .attr("height", 200)
+        .attr("transform", "translate(30, 40)")
       textbox.append("text")
         .attr("id", "label")
         .attr("class", "company")
         .attr("x", 80)
-        .attr("y", 620)
+        .attr("y", 70)
+        .text(d.Company);
+      textbox.append("text")
+        .attr("id", "label")
+        .attr("x", 80)
+        .attr("y", 110)
         .text("Female: % "+d.Female);
       textbox.append("text")
         .attr("id", "label")
         .attr("x", 80)
-        .attr("y", 640)
+        .attr("y", 130)
+        .text("Male: % "+(100-d.Female));
+      textbox.append("text")
+        .attr("id", "label")
+        .attr("x", 80)
+        .attr("y", 150)
         .text("Asian: % "+d.Asian);
       textbox.append("text")
         .attr("id", "label")
         .attr("x", 80)
-        .attr("y", 660)
+        .attr("y", 170)
         .text("Latino: % "+d.Latino);
       textbox.append("text")
         .attr("id", "label")
         .attr("x", 80)
-        .attr("y", 680)
+        .attr("y", 190)
         .text("Black: % "+d.Black);
     }
+
    // pan and zoom for map
    var zoom = d3.zoom()
               .scaleExtent([1,10])
