@@ -60,6 +60,9 @@
     const bay = await d3.json("/baycounties.json");
     console.log(bay);
 
+    //transform value
+    let transform_k = 1;
+
     // map creation
     var map = d3.select("#map_canvas");
     var mapWidth = map.attr("width")-10;
@@ -97,7 +100,7 @@
         .default(0)
         .on("onchange", val=>{
           femaleVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     var slide1= d3.select("#map_sliders")
         .append('g')
@@ -118,7 +121,7 @@
         .default(0)
         .on("onchange", val=>{
           asianVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     var slide2= d3.select("#map_sliders")
         .append('g')
@@ -139,7 +142,7 @@
         .default(0)
         .on("onchange", val=>{
           latinoVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     var slide3= d3.select("#map_sliders")
         .append('g')
@@ -160,7 +163,7 @@
         .default(0)
         .on("onchange", val=>{
           blackVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     d3.select("#map_sliders")
         .append('g')
@@ -168,7 +171,7 @@
         .call(sliderBlack);
 
     // function to continuously check the treshold values of each demographic and update (remove markers) accordingly
-    function updateLocations(){
+    function updateLocations(transform_k){
       location.forEach (d => {
         d['position'] = projection([d.Longitude, d.Latitude]);
       });
@@ -178,7 +181,7 @@
             .append("circle")
             .merge(circle)
             .attr("r", function(d){
-              if (d.Female>femaleVal && d.Asian>asianVal && d.Latino>latinoVal && d.Black>blackVal){ return 6; }
+              if (d.Female>femaleVal && d.Asian>asianVal && d.Latino>latinoVal && d.Black>blackVal){ return 6/transform_k; }
               else { return 0; }})
             .attr("opacity", 0.5)
             .attr("cx", d => d.position[0])
@@ -191,7 +194,7 @@
     }
 
     // initiate map with all markers and empty textbox
-    updateLocations()
+    updateLocations(transform_k)
     let textbox= d3.select("#map_canvas").append('g');
     textbox.append("rect")
       .attr("id", "textbox")
@@ -260,6 +263,7 @@
 
   function zoomed(){
     let transform = d3.event.transform;
+    transform_k = transform.k
     console.log(transform);
     console.log(transform.toString());
 
