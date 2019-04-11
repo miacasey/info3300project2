@@ -18,7 +18,7 @@
     .outline {
       stroke: gainsboro;
       stroke-width: 1px;
-      fill: none;
+      fill:none;
     }
     .infoBox {
       fill:aliceblue;
@@ -45,8 +45,7 @@
       <svg id= "map_sliders" width= 400 height= 600 style = "background : #fff; border: 1px solid grey"></svg>
   </div>
 
-  <h3>Employee Diversity From 2014-2018</h3>
-    <!-- line graphs -->
+    <!-- scatterplot -->
   <svg id = "scatter" width = 1100 height = 550 style = "border: 1px solid black"></svg>
 
   <script>
@@ -190,7 +189,7 @@
             .style("stroke-width", "1px");
     }
 
-    // initiate map with all markers and empty textbox
+    // initate map with all markers and empty textbox
     updateLocations()
     let textbox= d3.select("#map_canvas").append('g');
     textbox.append("rect")
@@ -214,7 +213,7 @@
     function addText(d){
       d3.selectAll('#label')
                 .remove();
-
+      
       textbox.append("text")
         .attr("id", "label")
         .attr("class", "company")
@@ -267,8 +266,9 @@
     viewport.select(".outline")
             .style("stroke-width", 1);
             viewport.selectAll("circle")
-                    .attr("r", 6/transform.k);
-
+                    .attr("r", function(d){
+                      if (d.Female>femaleVal && d.Asian>asianVal && d.Latino>latinoVal && d.Black>blackVal){ return 6/transform.k; }
+                      else { return 0; }});
   }
   //
 
@@ -340,7 +340,7 @@
 	       .attr('y1', 500)
          .attr('y2', 0)
          .style('stroke', 'black')
-         .style("opacity", 0.2)
+         .style("opacity", 0.4)
          .attr("transform", "translate(40, 10)");
 
       svg.append("text")
@@ -359,7 +359,7 @@
          .attr('y1', yScale(j))
          .attr('y2', yScale(j))
          .style('stroke', 'black')
-         .style("opacity", 0.2)
+         .style("opacity", 0.4)
          .attr("transform", "translate(40, 10)");
     }
 
@@ -395,24 +395,15 @@
     }
 
     //text for category buttons
-    let category_buttons = svg.append("g").attr("transform", "translate(930, 300)");
+    let category_buttons = svg.append("g").attr("transform", "translate(850, 300)");
     for (let k = 0; k < 6; k++){
-      category_buttons.append("circle")
-        .attr("class", "category_buttons")
-        .attr("id", categories[k] + "1")
-        .attr("cx", 0)
-        .attr("cy", k*30 - 5)
-        .attr("r", 5)
-        .attr("stroke", "gray")
-        .style("fill", (k === 0) ? "gray" : "white");
-
       category_buttons.append("text")
         .attr("class", "category_buttons")
         .attr("id", categories[k])
-        .attr("x", 20)
-        .attr("y", k*30)
+        .attr("x", 0)
+        .attr("y", k*20)
         .attr("font-size", "20px")
-        .style("opacity", (k === 0) ? 1 : 0.5)
+        .style("opacity", (k === 0) ? 1 : 0.4)
         .text(categories[k]);
     }
 
@@ -423,13 +414,6 @@
     let asian_button = d3.select("text#Asian");
     let latino_button = d3.select("text#Latino");
     let black_button = d3.select("text#Black");
-
-    let female_circle = d3.select("circle#Female1");
-    let male_circle = d3.select("circle#Male1");
-    let white_circle = d3.select("circle#White1");
-    let asian_circle = d3.select("circle#Asian1");
-    let latino_circle = d3.select("circle#Latino1");
-    let black_circle = d3.select("circle#Black1");
 
     //different layers
     let female = svg.append("g");
@@ -505,9 +489,6 @@
 
     }
 
-    let circle_list = [female_circle, male_circle, white_circle, asian_circle,
-    latino_circle, black_circle];
-
     let buttons_list = [female_button, male_button, white_button, asian_button,
         latino_button, black_button];
 
@@ -517,37 +498,35 @@
         if (i === num){
           category_layers[i].attr("display", "block");
           buttons_list[i].style("opacity", 1);
-          circle_list[i].style("fill", "gray");
         } else {
           category_layers[i].attr("display", "none");
           buttons_list[i].style("opacity", 0.4);
-          circle_list[i].style("fill", "white");
         }
       }
     }
 
     //mouse events
-    female_circle.on("click", function(){
+    female_button.on("click", function(){
       click(0);
     });
 
-    male_circle.on("click", function(){
+    male_button.on("click", function(){
       click(1);
     });
 
-    white_circle.on("click", function(){
+    white_button.on("click", function(){
       click(2);
     });
 
-    asian_circle.on("click", function(){
+    asian_button.on("click", function(){
       click(3);
     })
 
-    latino_circle.on("click", function(){
+    latino_button.on("click", function(){
       click(4);
     })
 
-    black_circle.on("click", function(){
+    black_button.on("click", function(){
       click(5);
     })
 
