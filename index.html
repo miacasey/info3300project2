@@ -60,10 +60,6 @@
     const july2015 = await d3.csv("/July2015.csv");
     const jan2014 = await d3.csv("/2014.csv");
     const bay = await d3.json("/baycounties.json");
-    console.log(bay);
-
-    //transform value
-    let transform_k = 1;
 
     // map creation
     var map = d3.select("#map_canvas");
@@ -111,7 +107,7 @@
         .default(0)
         .on("onchange", val=>{
           femaleVal = val*100
-          updateLocations(transform_k)
+          updateLocations()
         });
     var slide1= d3.select("#map_sliders")
         .append('g')
@@ -132,7 +128,7 @@
         .default(0)
         .on("onchange", val=>{
           asianVal = val*100
-          updateLocations(transform_k)
+          updateLocations()
         });
     var slide2= d3.select("#map_sliders")
         .append('g')
@@ -153,7 +149,7 @@
         .default(0)
         .on("onchange", val=>{
           latinoVal = val*100
-          updateLocations(transform_k)
+          updateLocations()
         });
     var slide3= d3.select("#map_sliders")
         .append('g')
@@ -174,7 +170,7 @@
         .default(0)
         .on("onchange", val=>{
           blackVal = val*100
-          updateLocations(transform_k)
+          updateLocations()
         });
     d3.select("#map_sliders")
         .append('g')
@@ -183,7 +179,6 @@
 
     // function to continuously check the treshold values of each demographic and update (remove markers) accordingly
     function updateLocations(){
-      console.log(location)
       location.forEach (d => {
         d['position'] = projection([d.Longitude, d.Latitude]);
       });
@@ -227,7 +222,7 @@
     }
 
     // initiate map with all markers and empty textbox
-    updateLocations(transform_k)
+    updateLocations()
     let textbox= d3.select("#map_canvas").append('g');
     textbox.append("rect")
       .attr("id", "textbox")
@@ -309,9 +304,6 @@
   function zoomed(){
     updateLocations();
     let transform = d3.event.transform;
-    transform_k = transform.k
-    console.log(transform);
-    console.log(transform.toString());
 
     viewport.attr("transform", transform.toString());
     viewport.select(".outline")
