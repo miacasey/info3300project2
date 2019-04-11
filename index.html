@@ -60,6 +60,9 @@
     const bay = await d3.json("/baycounties.json");
     console.log(bay);
 
+    //transform value
+    let transform_k = 1;
+
     // map creation
     var map = d3.select("#map_canvas");
     var mapWidth = map.attr("width")-10;
@@ -98,7 +101,7 @@
         .default(0)
         .on("onchange", val=>{
           femaleVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     var slide1= d3.select("#map_sliders")
         .append('g')
@@ -119,7 +122,7 @@
         .default(0)
         .on("onchange", val=>{
           asianVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     var slide2= d3.select("#map_sliders")
         .append('g')
@@ -140,7 +143,7 @@
         .default(0)
         .on("onchange", val=>{
           latinoVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     var slide3= d3.select("#map_sliders")
         .append('g')
@@ -161,7 +164,7 @@
         .default(0)
         .on("onchange", val=>{
           blackVal = val*100
-          updateLocations()
+          updateLocations(transform_k)
         });
     d3.select("#map_sliders")
         .append('g')
@@ -213,7 +216,7 @@
     }
 
     // initiate map with all markers and empty textbox
-    updateLocations()
+    updateLocations(transform_k)
     let textbox= d3.select("#map_canvas").append('g');
     textbox.append("rect")
       .attr("id", "textbox")
@@ -242,11 +245,11 @@
           .attr("x", 80)
           .attr("y", 75)
           .text(d.Company);
-        // textbox.append("text")
-        //   .attr("id", "label")
-        //   .attr("x", 80)
-        //   .attr("y", 100)
-        //   .text(d);
+        textbox.append("text")
+          .attr("id", "label")
+          .attr("x", 80)
+          .attr("y", 100)
+          .text(""+d.Location);
         textbox.append("text")
           .attr("id", "label")
           .attr("x", 80)
@@ -287,6 +290,7 @@
   function zoomed(){
     updateLocations();
     let transform = d3.event.transform;
+    transform_k = transform.k
     console.log(transform);
     console.log(transform.toString());
 
