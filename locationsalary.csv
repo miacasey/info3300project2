@@ -1,30 +1,30 @@
-Company,Latitude,Longitude,Average Salary,Female,Asian,Latino,Black,Location
-Facebook,37.48052,-122.15302,"117,000",35,40,5,3,"Menlo Park, CA"
-Instagram,37.48458,-122.14729,"136,000",35,40,5,3,"Menlo Park, CA"
-YouTube,37.62796,-122.426,"87,000",31,35,4,2,"San Bruno, CA"
-LinkedIn,37.39223,-122.03634,"123,000",42,39,4,4,"Sunnyvale, CA"
-Pinterest,37.77758,-122.39672,"143,000",45,41,6,3,"San Francisco, CA"
-Flickr,37.78682,-122.39235,"142,000",37,44,4,2,"San Francisco, CA"
-Twitter,37.77646,-122.4172,"122,000",38,26,3,3,"San Francisco, CA"
-Yahoo!,37.41715,-122.025,"116,000",37,44,4,2,"Sunnyvale, CA"
-Google,37.419857,-122.078827,"113,000",31,36,4,3,"Mountain View, CA"
-Apple,37.33182,-122.03118,"121,000",32,21,13,9,"Cupertino, CA"
-Cisco,37.40935,-121.92812,"104,000",24,37,5,4,"San Jose, CA"
-eBay,37.38257,-121.92799,"118,000",40,39,6,3,"San Jose, CA"
-HP,37.41171,-122.14888,"84,000",37,12,8,4,"Palo Alto, CA"
-Indiegogo,37.7814089,-122.4075924,"130,000",50,28,7,4,"San Francisco, CA"
-Nvidia,37.37062,-121.96718,"137,000",17,45,3,1,"Santa Clara, CA"
-Dell,37.41216,-121.97816,"93,000",28,9,11,10,"San Jose, CA"
-Ingram Micro,37.37886,-121.96037,"73,000",31,14,19,14,"Santa Clara, CA"
-Intel,37.38759,-121.96378,"124,000",27,39,9,4,"Santa Clara, CA"
-Groupon,37.38258,-121.96943,"86,000",44,20,8,8,"Santa Clara, CA"
-Amazon,37.7945733,-122.4019403,"100,000",39,13,13,21,"San Francisco, CA"
-Etsy ,37.7938,-122.39696,"119,000",54,10,4,3,"San Francisco, CA"
-Microsoft,37.7767687,-122.4166164,"118,000",26,31,6,4,"San Francisco, CA"
-Salesforce,37.7905027,-122.3972152,"109,000",31,24,4,3,"San Francisco, CA"
-Pandora,37.8101377,-122.2663485,"96,000",49,16,8,5,"Oakland, CA"
-Uber,37.7752315,-122.4175278,"115,000",38,32,6,8,"San Francisco, CA"
-Slack,37.78238,-122.4052253,"55,000",45,24,7,5,"San Francisco, CA"
-AirBnB ,37.7701381,-122.4063532,"110,000",41,36,7,3,"San Francisco, CA"
-Netflix,37.259575,-121.9627527,"104,000",43,24,6,4,"Los Gatos, CA"
-Yelp,37.7866619,-122.3999719,"68,000",54,15,10,6,"San Francisco, CA"
+Company,Latitude,Longitude,Average_Salary,Female,Asian,Latino,Black,City
+Facebook,37.48052,-122.15302,"117,000",35,40,5,3,Menlo Park
+Instagram,37.48458,-122.14729,"136,000",35,40,5,3,Menlo Park
+YouTube,37.62796,-122.426,"87,000",31,35,4,2,San Bruno
+LinkedIn,37.39223,-122.03634,"123,000",42,39,4,4,Sunnyvale
+Pinterest,37.77758,-122.39672,"143,000",45,41,6,3,San Francisco
+Flickr,37.78682,-122.39235,"142,000",37,44,4,2,San Francisco
+Twitter,37.77646,-122.4172,"122,000",38,26,3,3,San Francisco
+Yahoo!,37.41715,-122.025,"116,000",37,44,4,2,Sunnyvale
+Google,37.419857,-122.078827,"113,000",31,36,4,3,Mountain View
+Apple,37.33182,-122.03118,"121,000",32,21,13,9,Cupertino
+Cisco,37.40935,-121.92812,"104,000",24,37,5,4,San Jose
+eBay,37.38257,-121.92799,"118,000",40,39,6,3,San Jose
+HP,37.41171,-122.14888,"84,000",37,12,8,4,Palo Alto
+Indiegogo,37.7814089,-122.4075924,"130,000",50,28,7,4,San Francisco
+Nvidia,37.37062,-121.96718,"137,000",17,45,3,1,Santa Clara
+Dell,37.41216,-121.97816,"93,000",28,9,11,10,San Jose
+Ingram Micro,37.37886,-121.96037,"73,000",31,14,19,14,Santa Clara
+Intel,37.38759,-121.96378,"124,000",27,39,9,4,Santa Clara
+Groupon,37.38258,-121.96943,"86,000",44,20,8,8,Santa Clara
+Amazon,37.7945733,-122.4019403,"100,000",39,13,13,21,San Francisco
+Etsy ,37.7938,-122.39696,"119,000",54,10,4,3,San Francisco
+Microsoft,37.7767687,-122.4166164,"118,000",26,31,6,4,San Francisco
+Salesforce,37.7905027,-122.3972152,"109,000",31,24,4,3,San Francisco
+Pandora,37.8101377,-122.2663485,"96,000",49,16,8,5,Oakland
+Uber,37.7752315,-122.4175278,"115,000",38,32,6,8,San Francisco
+Slack,37.78238,-122.4052253,"55,000",45,24,7,5,San Francisco
+AirBnB ,37.7701381,-122.4063532,"110,000",41,36,7,3,San Francisco
+Netflix,37.259575,-121.9627527,"104,000",43,24,6,4,Los Gatos
+Yelp,37.7866619,-122.3999719,"68,000",54,15,10,6,San Francisco

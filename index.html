@@ -27,9 +27,11 @@
       fill-opacity:0.4;
       stroke-opacity:0.9
     }
-
     .company {
       font-size: 24px;
+    }
+    .companyInfo {
+      font-size: 14px;
     }
     </style>
 
@@ -42,7 +44,7 @@
   <!-- map -->
   <div width= 1200>
       <svg id = "map_canvas" width = 700 height = 600 style = "background : #fff; border: 1px solid grey"></svg>
-      <svg id= "map_sliders" width= 400 height= 600 style = "background : #fff; border: 1px solid grey"></svg>
+      <svg id= "map_sliders" width= 360 height= 600 style = "background : #fff; border: 1px solid grey"></svg>
   </div>
 
   <h3>Employee Diversity From 2014-2018</h3>
@@ -78,7 +80,8 @@
       .attr("class", "outline")
       .attr("d", path);
 
-    const location = await d3.csv("/locationsalary.csv");
+    const location = await d3.csv("locationsalary.csv");
+    console.log(location)
 
     // keeping track of threshold values of each demographic
     var femaleVal= 0
@@ -87,10 +90,17 @@
     var blackVal= 0
     var currentRad= 6
 
+    // adding slider box title
+    d3.select("#map_sliders")
+        .append("text")
+        .attr("class", "company")
+        .attr('transform', 'translate(40,40)')
+        .text("Company is more than...")
+
     // adding Female percentage slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,50)')
+        .attr('transform', 'translate(140,90)')
         .text("Female")
     var sliderFemale= d3.sliderBottom()
         .min(0)
@@ -105,13 +115,13 @@
         });
     var slide1= d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,80)')
+        .attr('transform', 'translate(30,110)')
     slide1.call(sliderFemale);
 
     //adding percentage Asian slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,170)')
+        .attr('transform', 'translate(140,210)')
         .text("Asian")
     var sliderAsian= d3.sliderBottom()
         .min(0)
@@ -126,13 +136,13 @@
         });
     var slide2= d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,200)')
+        .attr('transform', 'translate(30,230)')
     slide2.call(sliderAsian);
 
     // adding percentage Latino slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,290)')
+        .attr('transform', 'translate(140,330)')
         .text("Latino")
     var sliderLatino= d3.sliderBottom()
         .min(0)
@@ -147,13 +157,13 @@
         });
     var slide3= d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,320)')
+        .attr('transform', 'translate(30,350)')
     slide3.call(sliderLatino);
 
     // ading percentage Black slider
     d3.select("#map_sliders")
         .append("text")
-        .attr('transform', 'translate(30,410)')
+        .attr('transform', 'translate(140,450)')
         .text("Black")
     var sliderBlack= d3.sliderBottom()
         .min(0)
@@ -168,7 +178,7 @@
         });
     d3.select("#map_sliders")
         .append('g')
-        .attr('transform', 'translate(30,440)')
+        .attr('transform', 'translate(30,470)')
         .call(sliderBlack);
 
     // function to continuously check the treshold values of each demographic and update (remove markers) accordingly
@@ -198,6 +208,7 @@
               d3.select(this)
                 .transition().duration(200)
                 .attr("r", currentRad*2)
+                .style("stroke", "#000")
                 .style("stroke-width", ""+currentRad/3);
               viewport.append("text")
                 .attr("id", "a"+d.Company.replace(/[ _\-,.:'&#!\?]/g,""))
@@ -210,7 +221,7 @@
               d3.select(this)
                 .transition().duration(100)
                 .attr("r", currentRad)
-                .style("stroke", "none");;
+                .style("stroke-width", ""+currentRad/8);
               d3.select("#" + "a"+d.Company.replace(/[ _\-,.:'&#!\?]/g,"")).remove();
             });
     }
@@ -237,49 +248,57 @@
 
     // add/update text box in the corner of viewport (doesn't zoom)
     function addText(d){
+      console.log(d)
         d3.selectAll('#label')
                   .remove();
         textbox.append("text")
           .attr("id", "label")
           .attr("class", "company")
-          .attr("x", 80)
+          .attr("x", 85)
           .attr("y", 75)
           .text(d.Company);
         textbox.append("text")
           .attr("id", "label")
-          .attr("x", 80)
+          .attr("class", "companyInfo")
+          .attr("x", 65)
           .attr("y", 100)
-          .text(""+d.Location);
+          .text("Location: "+d.City+", CA");
         textbox.append("text")
           .attr("id", "label")
-          .attr("x", 80)
-          .attr("y", 120)
+          .attr("class", "companyInfo")
+          .attr("x", 60)
+          .attr("y", 115)
+          .text("Average Salary: "+d.Average_Salary);
+        textbox.append("text")
+          .attr("id", "label")
+          .attr("x", 85)
+          .attr("y", 140)
           .text("Female: % "+d.Female);
         textbox.append("text")
           .attr("id", "label")
-          .attr("x", 80)
-          .attr("y", 140)
+          .attr("x", 85)
+          .attr("y", 160)
           .text("Male: % "+(100-d.Female));
         textbox.append("text")
           .attr("id", "label")
-          .attr("x", 80)
-          .attr("y", 160)
+          .attr("x", 85)
+          .attr("y", 180)
           .text("Asian: % "+d.Asian);
         textbox.append("text")
           .attr("id", "label")
-          .attr("x", 80)
-          .attr("y", 180)
+          .attr("x", 85)
+          .attr("y", 200)
           .text("Latino: % "+d.Latino);
         textbox.append("text")
           .attr("id", "label")
-          .attr("x", 80)
-          .attr("y", 200)
+          .attr("x", 85)
+          .attr("y", 220)
           .text("Black: % "+d.Black);
     }
 
    // pan and zoom for map
    var zoom = d3.zoom()
-              .scaleExtent([0.5,10])
+              .scaleExtent([1,10])
               .on("zoom", zoomed);
 
 
