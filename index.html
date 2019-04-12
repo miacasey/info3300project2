@@ -119,7 +119,6 @@
       .attr("d", path);
 
     const location = await d3.csv("locationsalary.csv");
-    console.log(location)
 
     // keeping track of threshold values of each demographic
     var femaleVal= 0
@@ -289,7 +288,6 @@
 
     // add/update text box in the corner of viewport (doesn't zoom)
     function addText(d){
-      console.log(d)
         d3.selectAll('#label')
                   .remove();
         textbox.append("text")
@@ -492,8 +490,9 @@
         .attr("id", categories[k] + "1")
         .attr("cx", 0)
         .attr("cy", k*30 - 5)
-        .attr("r", 5)
+        .attr("r", 6)
         .attr("stroke", "gray")
+        .attr("stroke-width", 2)
         .style("fill", (k === 0) ? "gray" : "white");
 
       category_buttons.append("text")
