@@ -17,20 +17,24 @@
     <style>
     body {
       font-family: 'Open Sans', sans-serif;
-      color: grey;
+
     }
 
     h1{
       text-align: center;
       font-family: 'VT323', monospace;
       font-size: 75px;
-      color: #ff4500;
+      color: #7565d7 ;
 
     }
+
+
 
     h3{
       text-align: center;
       font-family: 'Open Sans', sans-serif;
+      font-size: 20 px;
+      color: grey;
 
     }
 
@@ -39,29 +43,36 @@
       width: 85%;
     }
 
-
+    .graph{
+      margin: auto;
+      width: 85%;
+    }
 
     .outline {
-      stroke: #E6E6FA;
+      stroke: #b7a9c1;
       stroke-width: 1px;
       fill: none;
     }
     .infoBox {
-      fill:dimgray;
-      stroke:grey;
-      stroke-width:3;
+      fill:#dcbff0;
+      stroke:#dcbff0;
+      stroke-width:2;
       fill-opacity:0.4;
       stroke-opacity:0.9
     }
     .company {
       font-size: 24px;
       font-family: 'VT323', monospace;
-      color: #bfff00;
+
 
     }
     .companyInfo {
       font-size: 14px;
       font-family: 'Open Sans', sans-serif;
+    }
+
+    .label{
+      color: whitesmoke;
     }
     </style>
 
@@ -70,17 +81,18 @@
 </head>
 <body>
   <h1> Diversity in the Silicon Valley </h1>
-  <h3>  </h3>
+  <h3> Employee Breakdown by Company (2018) </h3>
   <!-- map -->
   <div class = map width= 1200>
-      <svg id = "map_canvas" width = 700 height = 600 style = "background : #fff; border: 1px solid grey"></svg>
-      <svg id= "map_sliders" width= 360 height= 600 style = "background : #fff; border: 1px solid grey"></svg>
+      <svg id = "map_canvas" width = 700 height = 600 style = "background : #fff; border: 1px solid lightgrey; border-radius:10px;"></svg>
+      <svg id= "map_sliders" width= 360 height= 600 style = "background : #fff; border: 1px solid lightgrey; border-radius:10px;"></svg>
   </div>
 
-  <h3>Employee Diversity From 2014-2018</h3>
+  <h3>Employee Diversity (2014-2018)</h3>
     <!-- line graphs -->
-  <svg id = "scatter" width = 1065 height = 550 style = "border: 1px solid black"></svg>
-
+  <div class = graph width = 1200>
+  <svg id = "scatter" width = 1065 height = 550 style = "border: 1px solid lightgrey; border-radius:10px;"></svg>
+</div>
   <script>
   const requestData = async() => {
 
@@ -227,14 +239,14 @@
             .on("click", function(d){
               addText(d);
             })
-            .style ("fill", "purple")
-            .style("stroke", "#000")
+            .style ("fill", "#7565d7")
+            .style("stroke", "#dcbff0")
             .style("stroke-width", ""+currentRad/8)
             .on("mouseover", function(d){
               d3.select(this)
                 .transition().duration(200)
                 .attr("r", currentRad*2)
-                .style("stroke", "#000")
+                .style("stroke", "#dcbff0")
                 .style("stroke-width", ""+currentRad/3);
               viewport.append("text")
                 .attr("id", "a"+d.Company.replace(/[ _\-,.:'&#!\?]/g,""))
@@ -267,12 +279,12 @@
     textbox.append("text")
       .attr("id", "label")
       .attr("x", 55)
-      .attr("y", 90)
+      .attr("y", 80)
       .text("Click on a company to");
     textbox.append("text")
       .attr("id", "label")
       .attr("x", 50)
-      .attr("y", 110)
+      .attr("y", 100)
       .text("see employee diversity");
 
     // add/update text box in the corner of viewport (doesn't zoom)
@@ -447,7 +459,7 @@
 
 
     let processedData = [usPopulation, sampleAvg, diversityInc, fortune500, congress];
-    let colors = ["red", "green", "purple", "gold", "blue"];
+    let colors = ["#ff7873", "#3da5ff", "#7565d7", "#83ef97", "#ffde3d"];
     let labels = ["U.S. Population", "Companies Average", "DiversityInc Top 50",
                     "Fortune 500 CEOs", "U.S Congress"];
     let categories = ["Female", "Male", "White", "Asian", "Latino", "Black"];
@@ -467,7 +479,8 @@
       legend.append("text")
         .attr("x", 40)
         .attr("y", j * 25 + 15)
-        .text(labels[j]);
+        .text(labels[j])
+
 
     }
 
@@ -488,7 +501,7 @@
         .attr("id", categories[k])
         .attr("x", 20)
         .attr("y", k*30)
-        .attr("font-size", "20px")
+        .attr("font-size", "16px")
         .style("opacity", (k === 0) ? 1 : 0.5)
         .text(categories[k]);
     }
@@ -527,7 +540,7 @@
             .style("stroke", colors[i])
             .style("fill", "none")
             .style("stroke-width", (i===1) ? 4 : 3)
-            .style("opacity", (i === 1) ? 1 : 0.4)
+            .style("opacity", (i === 1) ? 1 : 0.7)
             .attr("transform", "translate(40, 10)");
 
       male.append("path")
@@ -537,7 +550,7 @@
             .style("stroke", colors[i])
             .style("fill", "none")
             .style("stroke-width", (i===1) ? 4 : 3)
-            .style("opacity", (i === 1) ? 1 : 0.4)
+            .style("opacity", (i === 1) ? 1 : 0.7)
             .attr("transform", "translate(40, 10)");
 
       black.append("path")
@@ -547,7 +560,7 @@
           .style("stroke", colors[i])
           .style("fill", "none")
           .style("stroke-width", (i===1) ? 4 : 3)
-          .style("opacity", (i === 1) ? 1 : 0.4)
+          .style("opacity", (i === 1) ? 1 : 0.7)
           .attr("transform", "translate(40, 10)");
 
       white.append("path")
@@ -557,7 +570,7 @@
            .style("stroke", colors[i])
            .style("fill", "none")
            .style("stroke-width", (i===1) ? 4 : 3)
-           .style("opacity", (i === 1) ? 1 : 0.4)
+           .style("opacity", (i === 1) ? 1 : 0.7)
            .attr("transform", "translate(40, 10)");
 
       latino.append("path")
@@ -567,7 +580,7 @@
            .style("stroke", colors[i])
            .style("fill", "none")
            .style("stroke-width", (i===1) ? 4 : 3)
-           .style("opacity", (i === 1) ? 1 : 0.4)
+           .style("opacity", (i === 1) ? 1 : 0.7)
            .attr("transform", "translate(40, 10)");
 
       asian.append("path")
@@ -577,7 +590,7 @@
            .style("stroke", colors[i])
            .style("fill", "none")
            .style("stroke-width", (i===1) ? 4 : 3)
-           .style("opacity", (i === 1) ? 1 : 0.4)
+           .style("opacity", (i === 1) ? 1 : 0.7)
            .attr("transform", "translate(40, 10)");
 
     }
